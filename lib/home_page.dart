@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+  const HomePage(this.function1, {super.key});
+  final void Function() function1;
   Widget CardMaker({
     required String imagepath,
     required String mainLabel,
@@ -11,6 +12,7 @@ class HomePage extends StatelessWidget {
     required List<Color> CardColour,
     required List<Color> LogoColour,
     required Color ButtonColor,
+    required onClickFunction,
   }) {
     return Card(
       margin: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
@@ -64,7 +66,7 @@ class HomePage extends StatelessWidget {
                 ),
                 Spacer(),
                 IconButton(
-                  onPressed: () {},
+                  onPressed: onClickFunction,
                   icon: Icon(myIcon),
                   style: IconButton.styleFrom(foregroundColor: ButtonColor),
                 ),
@@ -126,6 +128,7 @@ class HomePage extends StatelessWidget {
             ],
             LogoColour: [Colors.deepPurple, Colors.pinkAccent],
             ButtonColor: const Color.fromARGB(255, 0, 50, 90),
+            onClickFunction: () {},
           ),
           CardMaker(
             imagepath: 'assets/images/dumbell.png',
@@ -141,6 +144,7 @@ class HomePage extends StatelessWidget {
               const Color.fromARGB(255, 0, 162, 255),
             ],
             ButtonColor: Colors.white,
+            onClickFunction: function1,
           ),
           CardMaker(
             imagepath: 'assets/images/heart.png',
@@ -150,6 +154,7 @@ class HomePage extends StatelessWidget {
             CardColour: [const Color.fromARGB(255, 130, 48, 76), Colors.grey],
             LogoColour: [Colors.pink, const Color.fromARGB(255, 0, 140, 255)],
             ButtonColor: Colors.pink,
+            onClickFunction: () {},
           ),
         ],
       ),
