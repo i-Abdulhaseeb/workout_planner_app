@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:workout_app/screen_changer.dart';
+import 'package:workout_app/screen-decider/screen_changer.dart';
 
 var kLightScheme = ColorScheme(
   brightness: Brightness.light,

@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage(this.function1, {super.key});
+  const HomePage(this.function1, this.function2, this.function3, {super.key});
+
   final void Function() function1;
+  final void Function() function2;
+  final void Function() function3;
   Widget CardMaker({
     required String imagepath,
     required String mainLabel,
@@ -128,7 +131,7 @@ class HomePage extends StatelessWidget {
             ],
             LogoColour: [Colors.deepPurple, Colors.pinkAccent],
             ButtonColor: const Color.fromARGB(255, 0, 50, 90),
-            onClickFunction: () {},
+            onClickFunction: function2,
           ),
           CardMaker(
             imagepath: 'assets/images/dumbell.png',
@@ -154,7 +157,7 @@ class HomePage extends StatelessWidget {
             CardColour: [const Color.fromARGB(255, 130, 48, 76), Colors.grey],
             LogoColour: [Colors.pink, const Color.fromARGB(255, 0, 140, 255)],
             ButtonColor: Colors.pink,
-            onClickFunction: () {},
+            onClickFunction: function3,
           ),
         ],
       ),
