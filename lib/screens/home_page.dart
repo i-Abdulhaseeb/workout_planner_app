@@ -2,11 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage(this.function1, this.function2, this.function3, {super.key});
+  const HomePage(
+    this.function1,
+    this.function2,
+    this.function3,
+    this.appbarFunction1,
+    this.appbarFunction2, {
+    super.key,
+  });
 
   final void Function() function1;
   final void Function() function2;
   final void Function() function3;
+  final void Function() appbarFunction1;
+  final void Function() appbarFunction2;
   Widget CardMaker({
     required String imagepath,
     required String mainLabel,
@@ -106,6 +115,18 @@ class HomePage extends StatelessWidget {
             ),
             centerTitle: true,
             backgroundColor: const Color.fromARGB(255, 100, 25, 228),
+            actions: [
+              IconButton(
+                onPressed: appbarFunction1,
+                style: IconButton.styleFrom(foregroundColor: Colors.white),
+                icon: Icon(Icons.history),
+              ),
+              IconButton(
+                onPressed: appbarFunction2,
+                style: IconButton.styleFrom(foregroundColor: Colors.white),
+                icon: Icon(Icons.show_chart),
+              ),
+            ],
           ),
           SizedBox(height: 30),
           Container(

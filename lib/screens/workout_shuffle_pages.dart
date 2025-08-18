@@ -5,10 +5,13 @@ import 'package:workout_app/model/demo_data.dart';
 import 'dart:math';
 import 'package:workout_app/utilities/buttons.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:intl/intl.dart';
+import 'package:workout_app/model/data.dart';
 
 class StrengthPage extends StatefulWidget {
-  StrengthPage(this.function1, {super.key});
+  StrengthPage(this.function1, this.function2, {super.key});
   final void Function() function1;
+  final void Function(StrengthModel, String) function2;
   @override
   State<StrengthPage> createState() {
     return _StrengthPageState();
@@ -42,6 +45,8 @@ class _StrengthPageState extends State<StrengthPage> {
     if (selected_Date != null) {
       setState(() {
         _currentDate = selected_Date;
+        String formattedDate = DateFormat('dd-MM-yyyy').format(_currentDate!);
+        widget.function2(demoData[i], formattedDate);
         Navigator.pop(context);
       });
     }
@@ -110,8 +115,9 @@ class _StrengthPageState extends State<StrengthPage> {
 //Yoga page Class
 
 class YogaPage extends StatefulWidget {
-  YogaPage(this.function1, {super.key});
+  YogaPage(this.function1, this.function2, {super.key});
   final void Function() function1;
+  final void Function(StrengthModel, String) function2;
   @override
   State<YogaPage> createState() {
     return _YogaPageState();
@@ -145,6 +151,8 @@ class _YogaPageState extends State<YogaPage> {
     if (selected_Date != null) {
       setState(() {
         _currentDate = selected_Date;
+        String formattedDate = DateFormat('dd-MM-yyyy').format(_currentDate!);
+        widget.function2(demoData2[i], formattedDate);
         Navigator.pop(context);
       });
     }
@@ -211,8 +219,9 @@ class _YogaPageState extends State<YogaPage> {
 }
 
 class CardioPage extends StatefulWidget {
-  CardioPage(this.function1, {super.key});
+  CardioPage(this.function1, this.function2, {super.key});
   final void Function() function1;
+  final void Function(StrengthModel, String) function2;
   @override
   State<CardioPage> createState() {
     return _CardioPageState();
@@ -246,6 +255,8 @@ class _CardioPageState extends State<CardioPage> {
     if (selected_Date != null) {
       setState(() {
         _currentDate = selected_Date;
+        String formattedDate = DateFormat('dd-MM-yyyy').format(_currentDate!);
+        widget.function2(demoData3[i], formattedDate);
         Navigator.pop(context);
       });
     }

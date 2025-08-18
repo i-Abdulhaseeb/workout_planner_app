@@ -12,6 +12,8 @@ final demoData = [
     ],
     "The Foundation",
     "45 min",
+    435,
+    45,
   ),
 
   StrengthModel(
@@ -25,6 +27,8 @@ final demoData = [
     ],
     "Warrior Mode",
     "60 min",
+    460,
+    60,
   ),
 
   StrengthModel(
@@ -38,6 +42,8 @@ final demoData = [
     ],
     "Unbreakable",
     "75 min",
+    500,
+    75,
   ),
 ];
 
@@ -53,6 +59,8 @@ final demoData2 = [
     ],
     "Find Your Balance",
     "30 min",
+    575,
+    30,
   ),
 
   StrengthModel(
@@ -66,6 +74,8 @@ final demoData2 = [
     ],
     "Flow with Strength",
     "45 min",
+    650,
+    45,
   ),
 
   StrengthModel(
@@ -79,6 +89,8 @@ final demoData2 = [
     ],
     "Mastery of Body & Mind",
     "60 min",
+    700,
+    60,
   ),
 ];
 
@@ -94,6 +106,8 @@ final demoData3 = [
     ],
     "Get Moving",
     "20 min",
+    700,
+    20,
   ),
 
   StrengthModel(
@@ -107,6 +121,8 @@ final demoData3 = [
     ],
     "Feel the Burn",
     "35 min",
+    800,
+    35,
   ),
 
   StrengthModel(
@@ -120,5 +136,7 @@ final demoData3 = [
     ],
     "Beast Mode",
     "50 min",
+    900,
+    50,
   ),
 ];
