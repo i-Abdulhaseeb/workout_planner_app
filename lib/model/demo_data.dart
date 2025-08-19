@@ -14,6 +14,8 @@ final demoData = [
     "45 min",
     435,
     45,
+    5,
+    "Strength",
   ),
 
   StrengthModel(
@@ -29,6 +31,8 @@ final demoData = [
     "60 min",
     460,
     60,
+    5,
+    "Strength",
   ),
 
   StrengthModel(
@@ -44,6 +48,8 @@ final demoData = [
     "75 min",
     500,
     75,
+    5,
+    "Strength",
   ),
 ];
 
@@ -61,6 +67,8 @@ final demoData2 = [
     "30 min",
     575,
     30,
+    5,
+    "Yoga",
   ),
 
   StrengthModel(
@@ -76,6 +84,8 @@ final demoData2 = [
     "45 min",
     650,
     45,
+    5,
+    "Yoga",
   ),
 
   StrengthModel(
@@ -91,6 +101,8 @@ final demoData2 = [
     "60 min",
     700,
     60,
+    5,
+    "Yoga",
   ),
 ];
 
@@ -108,6 +120,8 @@ final demoData3 = [
     "20 min",
     700,
     20,
+    5,
+    "Cardio",
   ),
 
   StrengthModel(
@@ -123,6 +137,8 @@ final demoData3 = [
     "35 min",
     800,
     35,
+    5,
+    "Cardio",
   ),
 
   StrengthModel(
@@ -138,5 +154,7 @@ final demoData3 = [
     "50 min",
     900,
     50,
+    5,
+    "Cardio",
   ),
 ];

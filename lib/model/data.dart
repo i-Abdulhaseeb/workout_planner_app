@@ -6,6 +6,8 @@ class StrengthModel {
     this.timeRequired,
     this.Calories,
     this.time2,
+    this.exe,
+    this.trainingCategory,
   );
   String trainingType;
   List<String> workouts;
@@ -13,4 +15,6 @@ class StrengthModel {
   String timeRequired;
   int Calories;
   int time2;
+  int exe;
+  String trainingCategory;
 }

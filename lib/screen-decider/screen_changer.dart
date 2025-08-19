@@ -6,7 +6,7 @@ import 'package:workout_app/screens/appbar_pages.dart';
 import 'package:workout_app/model/data.dart';
 
 class ScreenChanger extends StatefulWidget {
-  ScreenChanger({super.key});
+  const ScreenChanger({super.key});
   State<ScreenChanger> createState() {
     return _ScreenChangerState();
   }
@@ -16,8 +16,35 @@ class _ScreenChangerState extends State<ScreenChanger> {
   List<StrengthModel> SelectedExe = [];
   List<String> SelectedDate = [];
   void addExeANDdate(StrengthModel S1, String D1) {
-    SelectedExe.add(S1);
-    SelectedDate.add(D1);
+    setState(() {
+      SelectedExe.add(S1);
+      SelectedDate.add(D1);
+    });
+  }
+
+  void deleteExeAndDate(StrengthModel S1, String D1) {
+    int index = SelectedExe.indexOf(S1);
+    int index2 = SelectedDate.indexOf(D1);
+    setState(() {
+      SelectedExe.remove(S1);
+      SelectedDate.remove(D1);
+    });
+    ScaffoldMessenger.of(context).clearSnackBars();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text("WorkOut Completed"),
+        duration: Duration(seconds: 3),
+        action: SnackBarAction(
+          label: "Undo",
+          onPressed: () {
+            setState(() {
+              SelectedExe.insert(index, S1);
+              SelectedDate.insert(index2, D1);
+            });
+          },
+        ),
+      ),
+    );
   }
 
   var currentScreen = 'splash-screen';
@@ -76,7 +103,13 @@ class _ScreenChangerState extends State<ScreenChanger> {
     } else if (currentScreen == 'cardio-screen') {
       return CardioPage(goBacktoHome, addExeANDdate);
     } else if (currentScreen == 'History-screen') {
-      return HistoryPage(SelectedExe, SelectedDate, goBacktoHome);
+      return HistoryPage(
+        SelectedExe,
+        SelectedDate,
+        goBacktoHome,
+        addExeANDdate,
+        deleteExeAndDate,
+      );
     } else {
       return ProgressPage();
     }
