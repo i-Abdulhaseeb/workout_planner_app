@@ -39,6 +39,8 @@ dependencies:
   loading_animation_widget: ^1.3.0
   font_awesome_flutter: ^10.9.0
   intl: ^0.20.2
+  graphic: ^2.6.0
+  syncfusion_flutter_charts: ^30.2.6+1
 
 dev_dependencies:
   flutter_test:

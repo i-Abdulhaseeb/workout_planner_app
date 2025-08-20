@@ -15,6 +15,9 @@ class ScreenChanger extends StatefulWidget {
 class _ScreenChangerState extends State<ScreenChanger> {
   List<StrengthModel> SelectedExe = [];
   List<String> SelectedDate = [];
+
+  List<StrengthModel> CompletedExe = [];
+  List<String> CompletedDate = [];
   void addExeANDdate(StrengthModel S1, String D1) {
     setState(() {
       SelectedExe.add(S1);
@@ -28,6 +31,8 @@ class _ScreenChangerState extends State<ScreenChanger> {
     setState(() {
       SelectedExe.remove(S1);
       SelectedDate.remove(D1);
+      CompletedExe.add(S1);
+      CompletedDate.add(D1);
     });
     ScaffoldMessenger.of(context).clearSnackBars();
     ScaffoldMessenger.of(context).showSnackBar(
@@ -40,6 +45,8 @@ class _ScreenChangerState extends State<ScreenChanger> {
             setState(() {
               SelectedExe.insert(index, S1);
               SelectedDate.insert(index2, D1);
+              CompletedExe.remove(S1);
+              CompletedDate.remove(D1);
             });
           },
         ),
@@ -111,14 +118,14 @@ class _ScreenChangerState extends State<ScreenChanger> {
         deleteExeAndDate,
       );
     } else {
-      return ProgressPage();
+      return ProgressPage(goBacktoHome, CompletedExe, CompletedDate);
     }
   }
 
   @override
   void initState() {
     super.initState();
-    Future.delayed(const Duration(seconds: 3), () {
+    Future.delayed(const Duration(seconds: 5), () {
       setState(() {
         currentScreen = 'home-page';
       });

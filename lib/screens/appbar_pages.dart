@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:workout_app/model/data.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
+import 'package:syncfusion_flutter_charts/sparkcharts.dart';
+import 'package:workout_app/utilities/category_changer.dart';
 
 class HistoryPage extends StatefulWidget {
   const HistoryPage(
@@ -38,60 +41,6 @@ class _HistoryPageState extends State<HistoryPage> {
       sum = sum + widget.E1[i].time2;
     }
     return sum;
-  }
-
-  Widget CategoryChanger(String ans) {
-    Color bgColor;
-    Color textColor = Colors.white;
-
-    switch (ans) {
-      case "Strength":
-        bgColor = Colors.deepOrange;
-        break;
-      case "Cardio":
-        bgColor = Colors.pinkAccent;
-        break;
-      default:
-        bgColor = Colors.teal;
-    }
-
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-      decoration: BoxDecoration(
-        color: bgColor.withValues(alpha: 0.9),
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: bgColor.withOpacity(0.4),
-            blurRadius: 6,
-            offset: const Offset(0, 3),
-          ),
-        ],
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(
-            ans == "Strength"
-                ? Icons.fitness_center
-                : ans == "Cardio"
-                ? Icons.favorite
-                : Icons.category,
-            size: 16,
-            color: textColor,
-          ),
-          const SizedBox(width: 6),
-          Text(
-            ans,
-            style: GoogleFonts.lato(
-              color: textColor,
-              fontSize: 14,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-        ],
-      ),
-    );
   }
 
   @override
@@ -215,9 +164,7 @@ class _HistoryPageState extends State<HistoryPage> {
                     child: ListView.builder(
                       itemCount: widget.E1.length,
                       itemBuilder: (ctx, index) => Dismissible(
-                        key: ValueKey(
-                          "${widget.E1[index].nameOfWorkout}-${widget.D1[index]}",
-                        ),
+                        key: UniqueKey(),
                         background: Container(
                           decoration: BoxDecoration(
                             gradient: LinearGradient(
@@ -447,7 +394,10 @@ class _HistoryPageState extends State<HistoryPage> {
 }
 
 class ProgressPage extends StatefulWidget {
-  ProgressPage({super.key});
+  ProgressPage(this.func, this.completedExe, this.completedDate, {super.key});
+  final void Function() func;
+  final List<StrengthModel> completedExe;
+  final List<String> completedDate;
   @override
   State<ProgressPage> createState() {
     return _ProgressPageState();
@@ -457,6 +407,259 @@ class ProgressPage extends StatefulWidget {
 class _ProgressPageState extends State<ProgressPage> {
   @override
   Widget build(context) {
-    return Text("Hey");
+    Map<String, double> FrequencyContainer = {};
+    FrequencyContainer["Strength"] = 0;
+    FrequencyContainer["Yoga"] = 0;
+    FrequencyContainer["Cardio"] = 0;
+    for (int i = 0; i < widget.completedExe.length; i++) {
+      String category = widget.completedExe[i].trainingCategory;
+      FrequencyContainer[category] = (FrequencyContainer[category] ?? 0) + 1;
+    }
+    final List<ChartData> chartData = [
+      ChartData("Strength", FrequencyContainer["Strength"]!),
+      ChartData("Yoga", FrequencyContainer["Yoga"]!),
+      ChartData("Cardio", FrequencyContainer["Cardio"]!),
+    ];
+    return Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [const Color.fromARGB(255, 0, 67, 122), Colors.blueAccent],
+        ),
+      ),
+      child: Center(
+        child: Column(
+          children: [
+            AppBar(
+              leading: IconButton(
+                onPressed: widget.func,
+                icon: FaIcon(FontAwesomeIcons.angleLeft, color: Colors.white),
+              ),
+              title: Text(
+                "Completed WorkOuts",
+                style: GoogleFonts.strait(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+              backgroundColor: Color.fromARGB(255, 0, 30, 54),
+            ),
+            Container(
+              width: 300,
+              height: 400,
+              child: SfCircularChart(
+                title: ChartTitle(
+                  text: 'Completed WorkOuts Ratio',
+                  textStyle: GoogleFonts.lato(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                legend: Legend(
+                  isVisible: true,
+                  textStyle: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15,
+                  ),
+                ),
+                tooltipBehavior: TooltipBehavior(enable: true),
+                series: <CircularSeries>[
+                  PieSeries<ChartData, String>(
+                    dataSource: chartData,
+                    xValueMapper: (ChartData data, _) => data.category,
+
+                    yValueMapper: (ChartData data, _) => data.value,
+                    dataLabelMapper: (ChartData data, _) => '${data.value}%',
+                    dataLabelSettings: const DataLabelSettings(isVisible: true),
+                    explode: true, // makes slices pop out on selection
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: 10),
+            Expanded(
+              child: ListView.builder(
+                itemCount: widget.completedExe.length,
+                itemBuilder: (ctx, index) => Card(
+                  margin: EdgeInsets.all(8),
+                  child: Container(
+                    padding: EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          const Color.fromARGB(255, 0, 37, 67),
+                          const Color.fromARGB(255, 41, 0, 49),
+                        ],
+                      ),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        CategoryChanger(
+                          widget.completedExe[index].trainingCategory,
+                        ),
+                        SizedBox(height: 8),
+                        Row(
+                          children: [
+                            Text(
+                              widget.completedExe[index].nameOfWorkout,
+                              style: GoogleFonts.lato(
+                                color: Colors.white,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            SizedBox(width: 8),
+                            Text(
+                              widget.completedExe[index].trainingType,
+                              style: GoogleFonts.lato(
+                                color: Colors.white70,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 6),
+
+                        /// Date
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.calendar_month,
+                              color: Colors.white70,
+                              size: 18,
+                            ),
+                            SizedBox(width: 5),
+                            Text(
+                              widget.completedDate[index],
+                              style: GoogleFonts.lato(
+                                color: Colors.white70,
+                                fontSize: 14,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 12),
+
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            /// Duration
+                            Row(
+                              children: [
+                                FaIcon(
+                                  FontAwesomeIcons.clock,
+                                  color: Colors.grey,
+                                  size: 18,
+                                ),
+                                SizedBox(width: 8),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      widget.completedExe[index].timeRequired,
+                                      style: GoogleFonts.lato(
+                                        color: Colors.white,
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    Text(
+                                      "Duration",
+                                      style: GoogleFonts.lato(
+                                        color: Colors.white70,
+                                        fontSize: 13,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+
+                            /// Calories
+                            Row(
+                              children: [
+                                FaIcon(
+                                  FontAwesomeIcons.fire,
+                                  color: Colors.orange,
+                                  size: 18,
+                                ),
+                                SizedBox(width: 8),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      widget.completedExe[index].Calories
+                                          .toString(),
+                                      style: GoogleFonts.lato(
+                                        color: Colors.white,
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    Text(
+                                      "Calories",
+                                      style: GoogleFonts.lato(
+                                        color: Colors.white70,
+                                        fontSize: 13,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+
+                            /// Exercises
+                            Row(
+                              children: [
+                                FaIcon(
+                                  FontAwesomeIcons.dumbbell,
+                                  color: Colors.lightBlue,
+                                  size: 18,
+                                ),
+                                SizedBox(width: 8),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      widget.completedExe[index].exe.toString(),
+                                      style: GoogleFonts.lato(
+                                        color: Colors.white,
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    Text(
+                                      "Exercises",
+                                      style: GoogleFonts.lato(
+                                        color: Colors.white70,
+                                        fontSize: 13,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
+}
+
+class ChartData {
+  final String category;
+  final double value;
+
+  ChartData(this.category, this.value);
 }
